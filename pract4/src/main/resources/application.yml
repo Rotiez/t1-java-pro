@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost:5432}/${DB_NAME:pract4}
+    username: ${DB_USERNAME:pract4_service}
+    password: ${DB_PASSWORD:pract4_service_password}
+    driver-class-name: org.postgresql.Driver
