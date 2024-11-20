@@ -1,7 +1,5 @@
 version: '3.8'
 
-name: khlebnikov-pract4-stack
-
 services:
   postgres:
     image: postgres:16
@@ -14,22 +12,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./config/postgres/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
-    networks:
-      - pract4-network
-
-  pract4-service:
-    build:
-      context: ./
-    container_name: pract4-service
-    ports:
-      - "8080:8080"
-    depends_on:
-      - postgres
-    networks:
-      - pract4-network
 
 volumes:
   postgres_data:
 
-networks:
-  pract4-network:

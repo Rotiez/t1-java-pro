@@ -30,16 +30,3 @@ dependencies {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
-
-tasks.register<JavaExec>("run") {
-    mainClass.set("edu.t1.pract4.Pract4Application")
-    classpath = sourceSets["main"].runtimeClasspath
-}
-
-tasks.jar {
-    manifest {
-        attributes(
-            "Main-Class" to "edu.t1.pract4.Pract4Application"
-        )
-    }
-}
