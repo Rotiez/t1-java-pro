@@ -1,0 +1,36 @@
+version: '3.8'
+
+name: khlebnikov-pract5
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: pract5-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./config/postgres/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+
+  product-service:
+    build:
+      context: ./
+    container_name: pract5-product-service
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres:5432
+      DB_NAME: pract5
+      DB_USERNAME: pract5_service
+      DB_PASSWORD: pract5_service_password
+      DB_MIGRATION_ENABLED: true
+      DB_MIGRATION_USERNAME: pract5_service_migration
+      DB_MIGRATION_PASSWORD: pract5_service_migration_password
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres_data:
