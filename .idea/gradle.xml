@@ -18,6 +18,9 @@
             <option value="$PROJECT_DIR$/pract6" />
             <option value="$PROJECT_DIR$/pract6/payment-service" />
             <option value="$PROJECT_DIR$/pract6/product-service" />
+            <option value="$PROJECT_DIR$/pract7" />
+            <option value="$PROJECT_DIR$/pract7/payment-service" />
+            <option value="$PROJECT_DIR$/pract7/product-service" />
           </set>
         </option>
       </GradleProjectSettings>
