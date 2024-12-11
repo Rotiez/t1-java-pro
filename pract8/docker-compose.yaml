@@ -1,0 +1,72 @@
+version: '3.8'
+
+name: khlebnikov-pract8
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./config/postgres/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+
+  product-service:
+    build:
+      context: ./product-service
+    container_name: product-service
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres:5432
+      DB_NAME: product_service_db
+      DB_USERNAME: product_service
+      DB_PASSWORD: product_service_password
+      DB_MIGRATION_ENABLED: true
+      DB_MIGRATION_USERNAME: product_service_migration
+      DB_MIGRATION_PASSWORD: product_service_migration_password
+    ports:
+      - "8082:8080"
+
+  payment-service:
+    build:
+      context: ./payment-service
+    container_name: payment-service
+    depends_on:
+      - postgres
+    environment:
+      PRODUCT_SERVICE_BASE_URL: http://host.docker.internal:8082
+      DB_HOST: postgres:5432
+      DB_NAME: payment_service_db
+      DB_USERNAME: payment_service
+      DB_PASSWORD: payment_service_password
+      DB_MIGRATION_ENABLED: true
+      DB_MIGRATION_USERNAME: payment_service_migration
+      DB_MIGRATION_PASSWORD: payment_service_migration_password
+    ports:
+      - "8081:8080"
+
+  limit-service:
+    build:
+      context: ./limit-service
+    container_name: limit-service
+    depends_on:
+      - postgres
+    environment:
+      PAYMENT_SERVICE_BASE_URL: http://host.docker.internal:8081
+      DB_HOST: postgres:5432
+      DB_NAME: limit_service_db
+      DB_USERNAME: limit_service
+      DB_PASSWORD: limit_service_password
+      DB_MIGRATION_ENABLED: true
+      DB_MIGRATION_USERNAME: limit_service_migration
+      DB_MIGRATION_PASSWORD: limit_service_migration_password
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres_data:
